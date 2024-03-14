@@ -3,9 +3,10 @@
 @using CrudProduct.Products
 @using CrudProduct.Localization
 @using Microsoft.Extensions.Localization
+@inject NavigationManager Navigation
 @inject IStringLocalizer<CrudProductResource> L
 @inject AbpBlazorMessageLocalizerHelper<CrudProductResource> LH
-@inherits AbpCrudPageBase<ICategoryService, CategoryDTO, Guid, PagedAndSortedResultRequestDto, CategoryUpdatingDTO>
+@inject ICategoryService CategoryService
 
 <Card>
     <CardHeader>
@@ -24,8 +25,7 @@
 
     <CardBody>
         <DataGrid TItem="CategoryDTO"
-                  Data="Entities"
-                  ReadData="OnDataGridReadAsync"
+                  Data="CategorytList"
                   TotalItems="TotalCount"
                   ShowPager="true"
                   PageSize="PageSize">
@@ -40,7 +40,7 @@
                 <DataGridColumn TItem="CategoryDTO">
                     <DisplayTemplate>
                         <Button Color="Color.Danger"
-                                Clicked="() => DeleteEntityAsync(context)">
+                                Clicked="() => ToggleModal(context)">
                             <Icon Name="IconName.Delete" />
                         </Button>
                     </DisplayTemplate>
@@ -50,4 +50,27 @@
     </CardBody>
 </Card>
 
-@code {}
+<Modal @bind-Visible="@modalVisible">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Delete item</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Div Flex="Flex.JustifyContent.Center.AlignItems.Center" Padding="Padding.Is3">
+                <Icon Name="IconName.Delete" IconSize="IconSize.x3" />
+            </Div>
+            <Paragraph TextAlignment="TextAlignment.Center">
+                Are you sure you want to delete this item?
+            </Paragraph>
+        </ModalBody>
+        <ModalFooter Flex="Flex.JustifyContent.Center.AlignItems.Center" Gap="Gap.Is3">
+            <Button Color="Color.Secondary" Outline Clicked="@ToggleModal">
+                No, cancel
+            </Button>
+            <Button Color="Color.Danger" Clicked="() => DeleteEntityAsync(CurrentCategory)">
+                Yes, I'm sure
+            </Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>

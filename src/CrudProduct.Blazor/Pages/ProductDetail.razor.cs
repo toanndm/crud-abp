@@ -12,14 +12,6 @@ namespace CrudProduct.Blazor.Pages
     public partial class ProductDetail
     {
         IReadOnlyList<CategoryDTO>? categories = null;
-        [Inject]
-        protected IProductAppService? ProductAppService { get; set; }
-        [Inject]
-        protected IMapper? Mapper { get; set; }
-        [Inject]
-        private NavigationManager? NavigationManager { get; set; }
-        [Inject]
-        protected ICategoryService? CategoryService { get; set; }
         [Parameter]
         public Guid ProductId { get; set; }
 

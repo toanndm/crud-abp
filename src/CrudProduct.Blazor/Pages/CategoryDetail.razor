@@ -13,17 +13,25 @@
         }
     </Heading>
     <Form>
-        <Field>
-            <FieldLabel>
-                Name
-            </FieldLabel>
-            <FieldBody>
-                @if (Category != null)
-                {
-                    <TextEdit Placeholder="Type category name" @bind-Text="@Category.Name" />
-                }
-            </FieldBody>
-        </Field>
+        <Validations Mode="ValidationMode.Auto" Model="@Category">
+            <Validation>
+                <Field>
+                    <FieldLabel>
+                        Name
+                    </FieldLabel>
+                    <FieldBody>
+                        @if (Category != null)
+                        {
+                            <TextEdit Placeholder="Type category name" @bind-Text="@Category.Name">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        }
+                    </FieldBody>
+                </Field>
+            </Validation>
+        </Validations>
         <Field>
             @if (isCreate)
             {
