@@ -1,0 +1,53 @@
+﻿@page "/categories"
+@using Volo.Abp.Application.Dtos
+@using CrudProduct.Products
+@using CrudProduct.Localization
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<CrudProductResource> L
+@inject AbpBlazorMessageLocalizerHelper<CrudProductResource> LH
+@inherits AbpCrudPageBase<ICategoryService, CategoryDTO, Guid, PagedAndSortedResultRequestDto, CategoryUpdatingDTO>
+
+<Card>
+    <CardHeader>
+        <Row Class="justify-content-between">
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <h2>@L["Categories"]</h2>
+            </Column>
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <Button Color="Color.Primary"
+                        Clicked="RedirectToDetail">
+                    @L["New Catgory"]
+                </Button>
+            </Column>
+        </Row>
+    </CardHeader>
+
+    <CardBody>
+        <DataGrid TItem="CategoryDTO"
+                  Data="Entities"
+                  ReadData="OnDataGridReadAsync"
+                  TotalItems="TotalCount"
+                  ShowPager="true"
+                  PageSize="PageSize">
+            <DataGridColumns>
+                <DataGridColumn TItem="CategoryDTO"
+                                Field="@nameof(CategoryDTO.Name)"
+                                Caption="@L["Name"]">
+                    <DisplayTemplate>
+                        <a class="text-decoration-none text-black" href="/categories/detail/@context.Id">@context.Name</a>
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="CategoryDTO">
+                    <DisplayTemplate>
+                        <Button Color="Color.Danger"
+                                Clicked="() => DeleteEntityAsync(context)">
+                            <Icon Name="IconName.Delete" />
+                        </Button>
+                    </DisplayTemplate>
+                </DataGridColumn>
+            </DataGridColumns>
+        </DataGrid>
+    </CardBody>
+</Card>
+
+@code {}

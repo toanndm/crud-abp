@@ -1,0 +1,71 @@
+﻿@page "/products/detail/{productId:guid}"
+@page "/products/detail/"
+
+<Div Margin="Margin.IsAuto.OnX" Padding="Padding.Is5.OnX" Width="Width.Is50">
+    <Heading Size="HeadingSize.Is2" Margin="Margin.Is3.FromBottom">
+        @if (isCreate)
+        {
+            <span>Create</span>
+        }
+        else
+        {
+            <span>Edit</span>
+        }
+    </Heading>
+    <Form >
+        <Field>
+            <FieldLabel>
+                Name
+            </FieldLabel>
+            <FieldBody>
+                @if (Product != null)
+                {
+                    <TextEdit Placeholder="Type product name" @bind-Text="@Product.Name" />
+                }
+            </FieldBody>
+        </Field>
+        <Field>
+            <FieldLabel>
+                Product Price
+            </FieldLabel>
+            <FieldBody>
+                @if (Product != null)
+                {
+                    <NumericPicker TValue="decimal" @bind-Value="@Product.Price"/>
+                }
+            </FieldBody>
+        </Field>
+        <Field>
+            <FieldLabel>
+                Category
+            </FieldLabel>
+            <FieldBody>
+                @if (categories != null)
+                {
+                    <Select TValue="Guid" @bind-SelectedValue="@Product.CategoryId">
+                        @foreach (var category in categories)
+                        {
+                            <SelectItem Value="@category.Id">@category.Name</SelectItem>
+                        }
+                    </Select>
+                }
+            </FieldBody>
+        </Field>
+        <Field>
+            @if (isCreate)
+            {
+                <Button Color="Color.Primary" Clicked="() => CreateEntityAsync(Product)" Type="@ButtonType.Submit"
+                        PreventDefaultOnSubmit="true">
+                    Create
+                </Button>
+            }
+            else
+            {
+                <Button Color="Color.Primary" Clicked="() => UpdateEntityAsync(Product)" Type="@ButtonType.Submit"
+                        PreventDefaultOnSubmit="true">
+                    Save
+                </Button>
+            }
+        </Field>
+    </Form>
+</Div>

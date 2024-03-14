@@ -1,0 +1,69 @@
+﻿@page "/products"
+@using Volo.Abp.Application.Dtos
+@using CrudProduct.Products
+@using CrudProduct.Localization
+@using Microsoft.Extensions.Localization
+@inject NavigationManager Navigation
+@inject IStringLocalizer<CrudProductResource> L
+@inject AbpBlazorMessageLocalizerHelper<CrudProductResource> LH
+@inject ICategoryService CategoryService
+@inherits AbpCrudPageBase<IProductAppService, ProductDTO, Guid, PagedAndSortedResultRequestDto, ProductUpdatingDTO>
+
+<Card>
+    <CardHeader>
+        <Row Class="justify-content-between">
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <h2>@L["Products"]</h2>
+            </Column>
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <Button Color="Color.Primary"
+                        Clicked="RedirectToDetail">
+                    @L["New Product"]
+                </Button>
+            </Column>
+        </Row>
+    </CardHeader>
+    <CardBody>
+        <DataGrid TItem="ProductDTO"
+                    Data="Entities"
+                    ReadData="OnDataGridReadAsync"
+                    CurrentPage="CurrentPage"
+                    TotalItems="TotalCount"
+                    ShowPager="true"
+                    PageSize="PageSize">
+            <DataGridColumns>
+                <DataGridColumn TItem="ProductDTO"
+                                Field="@nameof(ProductDTO.Name)"
+                                Caption="@L["Name"]">
+                    <DisplayTemplate>
+                        <a class="text-decoration-none text-black" href="/products/detail/@context.Id">@context.Name</a>
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="ProductDTO"
+                                Field="@nameof(ProductDTO.Category)"
+                                Caption="@L["Category"]">
+                    <DisplayTemplate>
+                        <span class="text-decoration-none text-black">@context.Category</span>
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="ProductDTO"
+                                Field="@nameof(ProductDTO.Price)"
+                                Caption="@L["Price"]">
+                    <DisplayTemplate>
+                        <span class="text-decoration-none text-black">@context.Price</span>
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="ProductDTO">
+                    <DisplayTemplate>
+                        <Button Color="Color.Danger"
+                                Clicked="() => DeleteEntityAsync(context)">
+                                <Icon Name="IconName.Delete"/>
+                        </Button>
+                    </DisplayTemplate>
+                </DataGridColumn>
+            </DataGridColumns>
+        </DataGrid>
+    </CardBody>
+</Card>
+
+@code{}

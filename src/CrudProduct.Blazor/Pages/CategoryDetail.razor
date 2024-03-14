@@ -1,0 +1,45 @@
+﻿@page "/categories/detail/{categoryId:guid}"
+@page "/categories/detail/"
+
+<Div Margin="Margin.IsAuto.OnX" Padding="Padding.Is5.OnX" Width="Width.Is50">
+    <Heading Size="HeadingSize.Is2" Margin="Margin.Is3.FromBottom">
+        @if (isCreate)
+        {
+            <span>Create</span>
+        }
+        else
+        {
+            <span>Edit</span>
+        }
+    </Heading>
+    <Form>
+        <Field>
+            <FieldLabel>
+                Name
+            </FieldLabel>
+            <FieldBody>
+                @if (Category != null)
+                {
+                    <TextEdit Placeholder="Type category name" @bind-Text="@Category.Name" />
+                }
+            </FieldBody>
+        </Field>
+        <Field>
+            @if (isCreate)
+            {
+                <Button Color="Color.Primary" Clicked="() => CreateEntityAsync(Category)" Type="@ButtonType.Submit"
+                        PreventDefaultOnSubmit="true">
+                    Create
+                </Button>
+            }
+            else
+            {
+                <Button Color="Color.Primary" Clicked="() => UpdateEntityAsync(Category)" Type="@ButtonType.Submit"
+                        PreventDefaultOnSubmit="true">
+                    Save
+                </Button>
+            }
+        </Field>
+    </Form>
+</Div>
+
